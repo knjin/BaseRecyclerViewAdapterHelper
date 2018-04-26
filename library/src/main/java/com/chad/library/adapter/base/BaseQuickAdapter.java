@@ -444,7 +444,14 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         mDuration = duration;
     }
 
-
+    /**
+     * If you have added headeview, the notification view refreshes.
+     * Do not need to care about the number of headview, only need to pass in the position of the final view
+     * @param position
+     */
+    public final void refreshNotifyItemChanged(int position) {
+        notifyItemChanged(position + getHeaderLayoutCount());
+    }
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
@@ -1342,9 +1349,11 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
 
     /**
      * bind recyclerView {@link #bindToRecyclerView(RecyclerView)} before use!
-     *
+     * Recommend you to use {@link #setEmptyView(layoutResId,viewGroup)}
      * @see #bindToRecyclerView(RecyclerView)
+     *
      */
+    @Deprecated
     public void setEmptyView(int layoutResId) {
         checkNotNull();
         setEmptyView(layoutResId, getRecyclerView());
@@ -1555,6 +1564,12 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      */
     public void openLoadAnimation() {
         this.mOpenAnimationEnable = true;
+    }
+    /**
+     * To close the animation when loading
+     */
+    public void closeLoadAnimation() {
+        this.mOpenAnimationEnable = false;
     }
 
     /**
